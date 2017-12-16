@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cubeee/steamtracker-updater/shared/model"
-	"github.com/cubeee/steamtracker-updater/shared/steam/service"
+	"github.com/cubeee/steamtracker/shared/model"
+	"github.com/cubeee/steamtracker/shared/steam/service"
 	"github.com/spf13/viper"
 	"gopkg.in/resty.v1"
 )

@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/cubeee/steamtracker-updater/shared/db"
+	"github.com/cubeee/steamtracker/shared/db"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 	"github.com/rakanalh/scheduler/storage"

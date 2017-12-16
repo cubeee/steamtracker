@@ -6,8 +6,8 @@ import (
 	"os/signal"
 	"runtime"
 
-	"github.com/cubeee/steamtracker-updater/shared/db"
-	"github.com/cubeee/steamtracker-updater/updater/task/update"
+	"github.com/cubeee/steamtracker/shared/db"
+	"github.com/cubeee/steamtracker/updater/task/update"
 	"github.com/robfig/cron"
 	"github.com/spf13/viper"
 )
@@ -37,8 +37,6 @@ func main() {
 		Pass:       os.Getenv("DB_PASS"),
 		Additional: "sslmode=disable",
 	}
-	log.Println(connectDetails)
-	log.Println(viper.GetString("profile_update_cron"))
 	if err := db.ConnectPostgres(connectDetails); err != nil {
 		panic(err)
 	}

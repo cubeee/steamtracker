@@ -4,11 +4,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/cubeee/steamtracker-updater/shared/db"
-	"github.com/cubeee/steamtracker-updater/shared/db/paginator"
-	"github.com/cubeee/steamtracker-updater/shared/model"
-	"github.com/cubeee/steamtracker-updater/shared/steam"
-	"github.com/cubeee/steamtracker-updater/updater/task"
+	"github.com/cubeee/steamtracker/shared/db"
+	"github.com/cubeee/steamtracker/shared/db/paginator"
+	"github.com/cubeee/steamtracker/shared/model"
+	"github.com/cubeee/steamtracker/shared/steam"
+	"github.com/cubeee/steamtracker/updater/task"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 )
