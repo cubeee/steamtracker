@@ -5,13 +5,13 @@ RUN go-wrapper download github.com/jinzhu/gorm \
  && go-wrapper download github.com/robfig/cron \
  && go-wrapper download gopkg.in/resty.v1 \
  && go-wrapper download github.com/spf13/viper
-COPY ../ .
+COPY ./ /go/src/github.com/cubeee/steamtracker
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 bash -c "go install ./shared && go build -a -installsuffix cgo -o build/updater ./updater"
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates bash
 WORKDIR /root/
-COPY --from=builder /go/src/github.com/cubeee/steamtracker/build/go-sig ./
+COPY --from=builder /go/src/github.com/cubeee/steamtracker/build/updater ./
 COPY --from=builder /go/src/github.com/cubeee/steamtracker/resources ./resources/
 RUN chmod +x /root/updater;
 CMD ["/root/updater"]
