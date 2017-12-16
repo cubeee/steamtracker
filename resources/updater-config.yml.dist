@@ -1,0 +1,5 @@
+api_key: ""
+
+enable_profile_updates: true
+profile_update_cron: "0 0 */12 * * *"
+profile_update_batch_size: 100
