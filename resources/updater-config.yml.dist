@@ -2,7 +2,7 @@ api_key: ""
 
 enable_metrics_collecting: false
 metrics_host: influxdb:8086
-metrics_database: steamtracker-updater-metrics
+metrics_database: steamtracker-metrics
 
 enable_profile_updates: true
 profile_update_cron: "0 0 */12 * * *"
