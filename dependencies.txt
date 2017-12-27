@@ -1,0 +1,6 @@
+github.com/spf13/viper
+github.com/jinzhu/gorm
+github.com/lib/pq
+github.com/robfig/cron
+github.com/spf13/viper
+gopkg.in/resty.v1

@@ -19,7 +19,7 @@ type ConnectDetails struct {
 	Additional string
 }
 
-func ConnectPostgres(details ConnectDetails) error {
+func ConnectPostgres(details *ConnectDetails) error {
 	args := fmt.Sprintf("host=%s dbname=%s user=%s password=%s", details.Host, details.Db, details.User, details.Pass)
 	if details.Additional != "" {
 		args = args + " " + details.Additional

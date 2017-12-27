@@ -27,10 +27,10 @@ func main() {
 	viper.AddConfigPath("./resources/")
 	viper.SetConfigType("yaml")
 	if err := viper.ReadInConfig(); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	connectDetails := db.ConnectDetails{
+	connectDetails := &db.ConnectDetails{
 		Host:       os.Getenv("DB_HOST"),
 		Db:         os.Getenv("DB"),
 		User:       os.Getenv("DB_USER"),
@@ -38,7 +38,7 @@ func main() {
 		Additional: "sslmode=disable",
 	}
 	if err := db.ConnectPostgres(connectDetails); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer db.Db.Close()
 
@@ -47,10 +47,15 @@ func main() {
 }
 
 func scheduleTasks() {
+	log.Println("Scheduling tasks...")
 	cronScheduler = cron.New()
 
 	if viper.GetBool("enable_profile_updates") {
 		cronScheduler.AddFunc(viper.GetString("profile_update_cron"), update.ProfileUpdater{}.Update)
+	}
+
+	if viper.GetBool("enable_snapshot_updates") {
+		cronScheduler.AddFunc(viper.GetString("snapshot_update_cron"), update.SnapshotUpdater{}.Update)
 	}
 
 	go func() {
@@ -59,6 +64,7 @@ func scheduleTasks() {
 }
 
 func listenSignals() {
+	log.Println("Ready")
 	signalChan := make(chan os.Signal, 1)
 	cleanupDone := make(chan bool)
 	signal.Notify(signalChan, os.Interrupt)
