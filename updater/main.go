@@ -5,11 +5,13 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
+	"time"
 
 	"github.com/cubeee/steamtracker/shared/db"
 	"github.com/cubeee/steamtracker/updater/task/update"
 	"github.com/robfig/cron"
 	"github.com/spf13/viper"
+	metrics "github.com/tevjef/go-runtime-metrics"
 )
 
 var (
@@ -41,6 +43,16 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Db.Close()
+
+	if viper.GetBool("enable_metrics_collecting") {
+		metrics.DefaultConfig.CollectionInterval = time.Second
+		metrics.DefaultConfig.BatchInterval = time.Second * 5
+		metrics.DefaultConfig.Host = viper.GetString("metrics_host")
+		metrics.DefaultConfig.Database = viper.GetString("metrics_database")
+		if err := metrics.RunCollector(metrics.DefaultConfig); err != nil {
+			log.Println("Metrics collection setup failed:", err)
+		}
+	}
 
 	scheduleTasks()
 	listenSignals()
