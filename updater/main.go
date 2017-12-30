@@ -1,12 +1,14 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 	"os/signal"
 	"runtime"
 	"time"
 
+	"github.com/cubeee/steamtracker/shared/config"
 	"github.com/cubeee/steamtracker/shared/db"
 	"github.com/cubeee/steamtracker/updater/task/update"
 	"github.com/robfig/cron"
@@ -23,14 +25,11 @@ func init() {
 }
 
 func main() {
-	log.Println("SteamTracker Updater starting...")
+	env := flag.String("env", "dev", "Program execution environment")
+	flag.Parse()
 
-	viper.SetConfigName("updater-config")
-	viper.AddConfigPath("./resources/config/")
-	viper.SetConfigType("yaml")
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(err)
-	}
+	log.Println("SteamTracker Updater starting...")
+	config.ReadConfig("updater", env)
 
 	connectDetails := &db.ConnectDetails{
 		Host:       os.Getenv("DB_HOST"),

@@ -10,4 +10,4 @@ WORKDIR /root/
 COPY --from=builder /go/src/github.com/cubeee/steamtracker/build/updater ./
 COPY --from=builder /go/src/github.com/cubeee/steamtracker/resources ./resources/
 RUN chmod +x /root/updater;
-CMD ["/root/updater"]
+CMD ["/root/updater", "-env=prod"]
