@@ -1,7 +1,7 @@
 FROM golang:latest as builder
 WORKDIR /go/src/github.com/cubeee/steamtracker
 COPY ./ /go/src/github.com/cubeee/steamtracker
-RUN /go/src/github.com/cubeee/steamtracker/install_dependencies.sh
+RUN /go/src/github.com/cubeee/steamtracker/updater/install_dependencies.sh
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 bash -c "go install ./shared && go build -a -installsuffix cgo -o build/updater ./updater"
 
 FROM alpine:latest

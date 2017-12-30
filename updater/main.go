@@ -26,7 +26,7 @@ func main() {
 	log.Println("SteamTracker Updater starting...")
 
 	viper.SetConfigName("updater-config")
-	viper.AddConfigPath("./resources/")
+	viper.AddConfigPath("./resources/config/")
 	viper.SetConfigType("yaml")
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal(err)

@@ -7,4 +7,4 @@ RUN apt-get update \
         inotify-tools \
  && rm -rf /var/lib/apt/lists/*
 
-RUN /app/install_dependencies.sh
+RUN /app/updater/install_dependencies.sh
