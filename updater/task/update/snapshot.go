@@ -29,7 +29,6 @@ func (updater SnapshotUpdater) Update() {
 	options := &paginator.Options{}
 	options.PageSize = uint64(viper.GetInt64("snapshot_update_batch_size"))
 	p := paginator.NewPaginator(options, database.Db, &model.Player{})
-	log.Println("pages:", p.Pages())
 
 	var batches int64
 	var totalTime time.Duration
@@ -45,14 +44,23 @@ func (updater SnapshotUpdater) Update() {
 		totalTime += elapsed
 
 		time.Sleep(2 * time.Second)
-		log.Println("page", page, "completed")
 	}
-	log.Println("Game snapshots updated", batches, "batches completed in", totalTime.Seconds()+float64(batches*2),
+	log.Println("Game snapshots updated:", batches, "batches completed in", totalTime.Seconds()+float64(batches*2),
 		"seconds, average time per batch:", int64(totalTime/time.Millisecond)/batches, "ms")
 }
 
 func (updater SnapshotUpdater) UpdateBatch(resolver *steam.Resolver, items *[]BatchItem) {
 	db := database.Db
+
+	saveUpdate := func(identifier string, gameCount int) {
+		db.
+			Table(model.Player{}.TableName()).
+			Where("identifier = ?", identifier).
+			Updates(model.Player{
+				GameCount:   gameCount,
+				LastUpdated: time.Now().UTC(),
+			})
+	}
 
 	for _, item := range *items {
 		gameCount, games, err := resolver.GetGames(item.Identifier)
@@ -61,7 +69,8 @@ func (updater SnapshotUpdater) UpdateBatch(resolver *steam.Resolver, items *[]Ba
 			continue
 		}
 
-		if gameCount <= 0 || games == nil {
+		if gameCount <= 0 || games == nil || len(*games) <= 0 {
+			saveUpdate(item.Identifier, gameCount)
 			continue
 		}
 
@@ -82,14 +91,7 @@ func (updater SnapshotUpdater) UpdateBatch(resolver *steam.Resolver, items *[]Ba
 			db.Create(&snapshot)
 		}
 
-		db.
-			Table(model.Player{}.TableName()).
-			Where("identifier = ?", item.Identifier).
-			Updates(model.Player{
-				GameCount:   gameCount,
-				LastUpdated: time.Now().UTC(),
-			})
-		log.Println("updated", item.Identifier)
+		saveUpdate(item.Identifier, gameCount)
 	}
 }
 
@@ -121,6 +123,5 @@ func (updater SnapshotUpdater) getBatch(paginator *paginator.Paginator, page uin
 	paginator.PageCustom(page, items, func(db *gorm.DB, out interface{}) {
 		db.Table(model.Player{}.TableName()).Select("id, identifier").Order("id asc").Find(&items)
 	})
-	log.Println(items)
 	return &items
 }

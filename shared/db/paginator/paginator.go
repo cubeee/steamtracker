@@ -42,7 +42,7 @@ func (p *Paginator) PageCustom(page uint64, out interface{}, customFunc func(db 
 		offset = (page - 1) * p.options.PageSize
 	}
 
-	customFunc(p.db.Debug().Offset(offset).Limit(p.options.PageSize), out)
+	customFunc(p.db.Offset(offset).Limit(p.options.PageSize), out)
 }
 
 func (p *Paginator) countItems(itemType interface{}) uint64 {

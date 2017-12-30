@@ -40,7 +40,7 @@ func (updater ProfileUpdater) Update() {
 
 		time.Sleep(2 * time.Second)
 	}
-	log.Println("Player profiles updated,", batches, "batches completed in", totalTime.Seconds()+float64(batches*2),
+	log.Println("Player profiles updated:", batches, "batches completed in", totalTime.Seconds()+float64(batches*2),
 		"seconds, average time per batch:", int64(totalTime/time.Millisecond)/batches, "ms")
 }
 
