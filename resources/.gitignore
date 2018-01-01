@@ -1,0 +1,4 @@
+config/updater-config.dev.yml
+config/updater-config.prod.yml
+config/web-config.dev.yml
+config/web-config.prod.yml

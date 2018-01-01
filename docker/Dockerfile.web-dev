@@ -1,0 +1,21 @@
+FROM golang:latest
+
+ARG PWD=/go/src/github.com/cubeee/steamtracker
+
+WORKDIR $PWD
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+        inotify-tools \
+        curl \
+ && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+ && apt-get install nodejs \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY ./web/install_dependencies.sh $PWD/web/
+COPY ./web/dependencies.txt $PWD/web/
+
+RUN mkdir /node_modules/ \
+ && mkdir node_modules \
+ && ln -s /node_modules/ $PWD/node_modules/ \
+ && $PWD/web/install_dependencies.sh

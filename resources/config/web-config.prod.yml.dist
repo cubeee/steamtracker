@@ -1,0 +1,10 @@
+server:
+  addr: :8181
+
+database:
+  name: steamtracker
+  host: postgres
+  username: steamtracker
+  password: steamtracker
+
+google-analytics-id: UA-xxxxxxxxx-1

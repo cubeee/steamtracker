@@ -1,4 +1,6 @@
 .*
+*~
 !.dockerignore
+!.gitignore
 requirements.txt
 *.sql

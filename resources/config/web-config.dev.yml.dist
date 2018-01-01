@@ -1,0 +1,8 @@
+server:
+  addr: :8181
+
+database:
+  name: steamtracker
+  host: postgresql
+  username: steamtracker
+  password: steamtracker

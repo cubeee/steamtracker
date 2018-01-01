@@ -1,0 +1,36 @@
+FROM golang:latest as builder
+ARG PWD=/go/src/github.com/cubeee/steamtracker
+WORKDIR $PWD
+
+# Install packages
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+        inotify-tools \
+        curl \
+ && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+ && apt-get install nodejs \
+ && rm -rf /var/lib/apt/lists/*
+
+# Build frontend
+ADD ./frontend $PWD/frontend
+RUN cd $PWD/frontend && npm install && npm run build && cd $PWD
+
+# Install go dependencies
+ADD ./web/install_dependencies.sh $PWD/web/
+ADD ./web/dependencies.txt $PWD/web/
+RUN $PWD/web/install_dependencies.sh
+
+# Copy src and build binary
+ADD ./ $PWD
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 bash -c "go install ./shared && go build -a -installsuffix cgo -o build/web ./web"
+
+##
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates bash
+WORKDIR /root/
+COPY --from=builder /go/src/github.com/cubeee/steamtracker/build/web ./
+COPY --from=builder /go/src/github.com/cubeee/steamtracker/resources/config/web-config.prod.yml ./resources/config/
+COPY --from=builder /go/src/github.com/cubeee/steamtracker/resources/static/ ./resources/static/
+COPY --from=builder /go/src/github.com/cubeee/steamtracker/resources/templates/ ./resources/templates/
+RUN chmod +x /root/web;
+CMD ["/root/web", "-env=prod"]

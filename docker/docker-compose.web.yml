@@ -1,0 +1,35 @@
+version: '3'
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web-dev
+    image: steamtracker-web-dev
+    command: tail -f /dev/null
+    ports:
+    - "8181:8181"
+    networks:
+    - postgresql
+    volumes:
+    - /steamtracker:/go/src/github.com/cubeee/steamtracker
+    - steamtracker_web_node_modules:/go/src/github.com/cubeee/steamtracker/frontend/node_modules
+    external_links:
+    - postgresql
+    - influxdb
+  frontend_watch:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web-dev
+    image: steamtracker-web-dev
+    command: bash -c "cd frontend && npm run watch"
+    volumes:
+    - /steamtracker:/go/src/github.com/cubeee/steamtracker
+    - steamtracker_web_node_modules:/go/src/github.com/cubeee/steamtracker/frontend/node_modules
+
+networks:
+  postgresql:
+    external: true
+
+volumes:
+  steamtracker_web_node_modules:
+    external: true
