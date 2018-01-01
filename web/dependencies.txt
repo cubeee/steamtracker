@@ -4,3 +4,4 @@ github.com/jinzhu/gorm
 github.com/lib/pq
 github.com/tevjef/go-runtime-metrics
 github.com/flosch/pongo2
+github.com/mattes/migrate

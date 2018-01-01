@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS all_games_minutes_tracked(dateFrom TIMESTAMP, dateTo TIMESTAMP);

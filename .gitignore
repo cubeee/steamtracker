@@ -4,3 +4,4 @@
 !.gitignore
 requirements.txt
 *.sql
+!resources/migrations/*.sql
