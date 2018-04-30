@@ -45,6 +45,7 @@ func (b *Bootstrapper) SetupViews(reload bool) {
 	templateEngine := engine.Pongo2(TemplateDir, TemplateExtension)
 	templateEngine.Reload(reload)
 	templateEngine.RegisterTag("loop", tags.LoopTagParser)
+	engine.RegisterFilters()
 	b.RegisterView(templateEngine)
 }
 

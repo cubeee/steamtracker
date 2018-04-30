@@ -3,6 +3,7 @@
 {% block navigation %}{% endblock %}
 
 {% block body %}
+{% import "_macros.tpl" time_played %}
 <div class="pusher">
     <div class="ui inverted vertical masthead center aligned segment">
         <div class="ui large secondary inverted pointing menu">
@@ -35,11 +36,11 @@
                 <div class="row">
                     <div class="ui twelve wide center aligned column">
                         <a class="ui large black image label">
-                            {{ tracked_players }}
+                            {{ tracked_players|formatnumber:"%d" }}
                             <div class="detail">Players tracked</div>
                         </a>
                         <a class="ui large black image label">
-                            {{ timePlayed(collective_hours_tracked, false) }}
+                            {{ time_played(collective_hours_tracked, false) }}
                             <div class="detail">Collective hours tracked</div>
                         </a>
                     </div>
