@@ -1,5 +1,5 @@
 #!/bin/bash
 dir=`dirname $0`
 while read p; do
-    go get -v ${p}
+    go get -u -v ${p}
 done < ${dir}/dependencies.txt
