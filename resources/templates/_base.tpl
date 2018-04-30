@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=Edge" />
-    <meta name="application-name" content="Steam Tracker" />
+    <meta name="application-name" content="SteamTracker" />
     <meta name="author" content="cubeee" />
     <meta name="rating" content="general" />
     <meta name="keywords" content="Steam, playtime, tracker, tracking" />
@@ -13,11 +13,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="blue-translucent" />
     <meta name="theme-color" content="#2c3e50" />
     <meta property="og:title" content="Steam Tracker" />
-    <meta property="og:site_name" content="Steam Tracker" />
+    <meta property="og:site_name" content="SteamTracker" />
     <meta property="og:description" content="Steam user tracking site" />
     <meta property="og:type" content="website" />
 
-    <title>{% if pageTitle %}{{ pageTitle }} - Steam Tracker{% else %}Steam Tracker{% endif %}</title>
+    <title>{% if pageTitle %}{{ pageTitle }} - SteamTracker{% else %}SteamTracker{% endif %}</title>
     {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="/static/global.css" />
     {% endblock %}
