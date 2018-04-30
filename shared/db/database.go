@@ -30,6 +30,7 @@ func ConnectPostgres(details *ConnectDetails) error {
 func Connect(dialect, args string) error {
 	var err error
 	Db, err = gorm.Open(dialect, args)
+	Db.DB().SetMaxIdleConns(100)
 	if err != nil {
 		return err
 	}

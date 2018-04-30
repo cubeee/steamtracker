@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"runtime"
+	"time"
 
 	"github.com/cubeee/steamtracker/shared/config"
 	"github.com/cubeee/steamtracker/shared/db"
@@ -26,10 +27,13 @@ func init() {
 }
 
 func main() {
+	bootStart := time.Now()
+
 	env := flag.String("env", "dev", "Program execution environment")
 	flag.Parse()
 
 	log.Println("SteamTracker Web starting...")
+	log.Println("Environment:", *env)
 	config.ReadConfig("web", env)
 
 	connectDetails := &db.ConnectDetails{
@@ -54,6 +58,10 @@ func main() {
 	app := bootstrap.New(AppName)
 	app.Bootstrap(env, globalContext)
 	app.Configure(routes.Configure)
+
+	bootElapsed := time.Since(bootStart)
+	log.Println("SteamTracker Web started in", bootElapsed)
+
 	app.Listen(viper.GetString("server.addr"))
 }
 
@@ -68,7 +76,11 @@ func migrateDatabase(connectDetails *db.ConnectDetails) {
 		log.Panic(err)
 	}
 	if err := m.Up(); err != nil {
-		log.Panic(err)
+		if err.Error() == "no change" {
+			log.Println("Database schema up to date, no migrations needed")
+		} else {
+			log.Panic(err)
+		}
 	} else {
 		log.Println("Migrations executed successfully")
 	}

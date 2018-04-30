@@ -21,8 +21,9 @@ type Configurator func(*Bootstrapper)
 
 type Bootstrapper struct {
 	*iris.Application
-	AppName      string
-	AppSpawnDate time.Time
+	AppName               string
+	AppSpawnDate          time.Time
+	DisableVersionChecker bool
 }
 
 type GlobalCtx struct {
@@ -31,9 +32,10 @@ type GlobalCtx struct {
 
 func New(appName string, configurators ...Configurator) *Bootstrapper {
 	b := &Bootstrapper{
-		AppName:      appName,
-		AppSpawnDate: time.Now(),
-		Application:  iris.New(),
+		AppName:               appName,
+		AppSpawnDate:          time.Now(),
+		Application:           iris.New(),
+		DisableVersionChecker: true,
 	}
 	b.Configure(configurators...)
 	return b
