@@ -5,6 +5,6 @@ import (
 )
 
 type GameStatistic struct {
-	MinutesPlayed int
+	MinutesPlayed int64
 	Game          sharedModel.Game
 }

@@ -76,5 +76,5 @@ func migrateDatabase(connectDetails *db.ConnectDetails) {
 
 func preloadCache() {
 	cache.GlobalCache = &cache.Cache{}
-	cache.GlobalCache.SetIndexCache(cache.PreloadIndexCache())
+	cache.GlobalCache.SetIndexCache(cache.LoadIndexCache())
 }

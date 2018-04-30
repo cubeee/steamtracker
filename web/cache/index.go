@@ -1,8 +1,10 @@
 package cache
 
 import (
-	sharedModel "github.com/cubeee/steamtracker/shared/model"
+	"log"
+
 	"github.com/cubeee/steamtracker/web/model"
+	"github.com/cubeee/steamtracker/web/statistics"
 )
 
 type IndexCache struct {
@@ -13,16 +15,32 @@ type IndexCache struct {
 	GameStats              *[]model.GameStatistic
 }
 
-func PreloadIndexCache() *IndexCache {
+func LoadIndexCache() *IndexCache {
+	games := 10
+
+	var stats24h *[]model.GameStatistic
+	var stats7d *[]model.GameStatistic
+	var stats *[]model.GameStatistic
+
+	loader := Loader{}
+	loader.Add(func() {
+		stats24h = statistics.GetGameStatistics24h(games)
+	})
+	loader.Add(func() {
+		stats7d = statistics.GetGameStatistics7d(games)
+	})
+	loader.Add(func() {
+		stats = statistics.GetGameStatistics(games)
+	})
+
+	elapsed := loader.LoadSync()
+	log.Println("Index cache loaded in", elapsed)
+
 	return &IndexCache{
 		TrackedPlayers:         1000,   // TODO: real value from db
 		CollectiveHoursTracked: 100000, // TODO: real value from db
-		GameStats: &[]model.GameStatistic{ // TODO: real stats
-			{999, sharedModel.Game{
-				AppId: 578080,
-				Name:  "PUBG herp derp",
-				Icon:  "93d896e7d7a42ae35c1d77239430e1d90bc82cae",
-			}},
-		},
+		GameStats24h:           stats24h,
+		GameStats7d:            stats7d,
+		GameStats:              stats,
 	}
 }
