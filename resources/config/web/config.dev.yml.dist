@@ -6,3 +6,6 @@ database:
   host: postgresql
   username: steamtracker
   password: steamtracker
+
+front-page:
+  games-in-tables: 10

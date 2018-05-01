@@ -7,4 +7,7 @@ database:
   username: steamtracker
   password: steamtracker
 
+front-page:
+  games-in-tables: 10
+
 google-analytics-id: UA-xxxxxxxxx-1

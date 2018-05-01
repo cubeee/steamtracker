@@ -8,7 +8,7 @@
                     {{ game_image(game_stat.Game.AppId, game_stat.Game.Icon, "ui mini rounded image") }}
                     <div class="content">
                         <a href="/game/{{ game_stat.Game.AppId }}/">{{ game_stat.Game.Name }}</a>
-                        <div class="sub header" title="{{ game_stat.MinutesPlayed }} minutes">
+                        <div class="sub header" title="{{ formatted_number(game_stat.MinutesPlayed) }} minutes">
                             {{ time_played(game_stat.MinutesPlayed) }}
                         </div>
                     </div>

@@ -27,13 +27,16 @@ func (l *Loader) load(async bool) time.Duration {
 
 	start := time.Now()
 
-	for _, operation := range l.operations {
-		go func() {
+	for _, op := range l.operations {
+		go func(operation func()) {
 			operation()
 			wg.Done()
-		}()
+		}(op)
 	}
 
-	wg.Wait()
-	return time.Since(start)
+	if !async {
+		wg.Wait()
+		return time.Since(start)
+	}
+	return 0
 }

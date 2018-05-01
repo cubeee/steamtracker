@@ -5,13 +5,13 @@ var (
 )
 
 type Cache struct {
-	indexCache *IndexCache
+	indexCache IndexCache
 }
 
-func (c *Cache) SetIndexCache(cache *IndexCache) {
+func (c *Cache) SetIndexCache(cache IndexCache) {
 	c.indexCache = cache
 }
 
-func (c *Cache) GetIndexCache() *IndexCache {
+func (c *Cache) GetIndexCache() IndexCache {
 	return c.indexCache
 }

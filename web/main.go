@@ -14,7 +14,6 @@ import (
 	"github.com/mattes/migrate"
 	"github.com/mattes/migrate/database/postgres"
 	_ "github.com/mattes/migrate/source/file"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -87,6 +86,7 @@ func migrateDatabase(connectDetails *db.ConnectDetails) {
 }
 
 func preloadCache() {
+	log.Println("Preloading cache...")
 	cache.GlobalCache = &cache.Cache{}
-	cache.GlobalCache.SetIndexCache(cache.LoadIndexCache())
+	cache.GlobalCache.SetIndexCache(cache.LoadIndexCache(config.GetInt64("front-page.games-in-tables")))
 }

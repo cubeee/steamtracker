@@ -19,11 +19,13 @@
     {% set hours=minutes/60|integer %}
     {% if detailed %}
         {% if minutes <= 60 %}
-            {{ minutes|formatnumber:"%d" }} minute{{ minutes|pluralize }}
+            {{ formatted_number(minutes) }} minute{{ minutes|pluralize }}
         {% else %}
-            {{ hours|formatnumber:"%d" }} hour{{ hours|pluralize }}
+            {{ formatted_number(hours) }} hour{{ hours|pluralize }}
         {% endif %}
     {% else %}
-        {{ hours|formatnumber:"%d" }}
+        {{ formatted_number(hours) }}
     {% endif %}
 {% endmacro %}
+
+{% macro formatted_number(num) export %}{{ num|formatnumber:"%d" }}{% endmacro %}
