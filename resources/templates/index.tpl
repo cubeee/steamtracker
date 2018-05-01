@@ -6,14 +6,6 @@
 {% import "_macros.tpl" time_played %}
 <div class="pusher">
     <div class="ui inverted vertical masthead center aligned segment">
-        <div class="ui large secondary inverted pointing menu">
-            <div class="ui container">
-                <!-- TODO: authenticated -->
-                <div class="right item">
-                    <@macros.steam_auth_img />
-                </div>
-            </div>
-        </div>
         <div class="ui text container">
             <h1 class="ui inverted header">SteamTracker</h1>
             <h2>Track your Steam profile progression</h2>
