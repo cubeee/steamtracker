@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/cubeee/steamtracker/shared/config"
 	"github.com/cubeee/steamtracker/shared/model"
 	"github.com/cubeee/steamtracker/shared/steam/service"
 	"github.com/spf13/viper"
@@ -58,7 +59,7 @@ func (resolver Resolver) getResponse(service service.Service, out interface{}, a
 }
 
 func (Resolver) getUrl(service service.Service, params []string) string {
-	apiKey := viper.GetString("api_key")
+	apiKey := config.GetString("api_key")
 	if apiKey == "" {
 		panic("No Steam api key set")
 	}

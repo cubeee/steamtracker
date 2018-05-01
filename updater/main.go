@@ -43,11 +43,11 @@ func main() {
 	}
 	defer db.Db.Close()
 
-	if viper.GetBool("enable_metrics_collecting") {
+	if config.GetBool("enable_metrics_collecting") {
 		metrics.DefaultConfig.CollectionInterval = time.Second
 		metrics.DefaultConfig.BatchInterval = time.Second * 5
-		metrics.DefaultConfig.Host = viper.GetString("metrics_host")
-		metrics.DefaultConfig.Database = viper.GetString("metrics_database")
+		metrics.DefaultConfig.Host = config.GetString("metrics_host")
+		metrics.DefaultConfig.Database = config.GetString("metrics_database")
 		if err := metrics.RunCollector(metrics.DefaultConfig); err != nil {
 			log.Println("Metrics collection setup failed:", err)
 		}
@@ -61,12 +61,12 @@ func scheduleTasks() {
 	log.Println("Scheduling tasks...")
 	cronScheduler = cron.New()
 
-	if viper.GetBool("enable_profile_updates") {
-		cronScheduler.AddFunc(viper.GetString("profile_update_cron"), update.ProfileUpdater{}.Update)
+	if config.GetBool("enable_profile_updates") {
+		cronScheduler.AddFunc(config.GetString("profile_update_cron"), update.ProfileUpdater{}.Update)
 	}
 
-	if viper.GetBool("enable_snapshot_updates") {
-		cronScheduler.AddFunc(viper.GetString("snapshot_update_cron"), update.SnapshotUpdater{}.Update)
+	if config.GetBool("enable_snapshot_updates") {
+		cronScheduler.AddFunc(config.GetString("snapshot_update_cron"), update.SnapshotUpdater{}.Update)
 	}
 
 	go func() {

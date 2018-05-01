@@ -4,6 +4,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/cubeee/steamtracker/shared/config"
 	database "github.com/cubeee/steamtracker/shared/db"
 	"github.com/cubeee/steamtracker/shared/db/paginator"
 	"github.com/cubeee/steamtracker/shared/model"
@@ -22,7 +23,7 @@ func (updater ProfileUpdater) Update() {
 	resolver := &steam.Resolver{}
 
 	options := &paginator.Options{}
-	options.PageSize = uint64(viper.GetInt64("profile_update_batch_size"))
+	options.PageSize = uint64(config.GetInt64("profile_update_batch_size"))
 	p := paginator.NewPaginator(options, database.Db, &model.Player{})
 
 	var batches int64

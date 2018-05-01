@@ -37,10 +37,10 @@ func main() {
 	config.ReadConfig("web", env)
 
 	connectDetails := &db.ConnectDetails{
-		Host:       viper.GetString("database.host"),
-		Db:         viper.GetString("database.name"),
-		User:       viper.GetString("database.username"),
-		Pass:       viper.GetString("database.password"),
+		Host:       config.GetString("database.host"),
+		Db:         config.GetString("database.name"),
+		User:       config.GetString("database.username"),
+		Pass:       config.GetString("database.password"),
 		Additional: "sslmode=disable",
 	}
 	if err := db.ConnectPostgres(connectDetails); err != nil {
@@ -50,7 +50,7 @@ func main() {
 	migrateDatabase(connectDetails)
 
 	globalContext := &bootstrap.GlobalCtx{
-		GoogleAnalyticsId: viper.GetString("google-analytics-id"),
+		GoogleAnalyticsId: config.GetString("google-analytics-id"),
 	}
 
 	preloadCache()
@@ -62,7 +62,7 @@ func main() {
 	bootElapsed := time.Since(bootStart)
 	log.Println("SteamTracker Web started in", bootElapsed)
 
-	app.Listen(viper.GetString("server.addr"))
+	app.Listen(config.GetString("server.addr"))
 }
 
 func migrateDatabase(connectDetails *db.ConnectDetails) {
