@@ -11,3 +11,8 @@ front-page:
   games-in-tables: 10
 
 google-analytics-id: UA-xxxxxxxxx-1
+
+#
+# Iris config
+#
+DisableVersionChecker: true

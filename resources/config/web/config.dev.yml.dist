@@ -9,3 +9,8 @@ database:
 
 front-page:
   games-in-tables: 10
+
+#
+# Iris config
+#
+DisableVersionChecker: false

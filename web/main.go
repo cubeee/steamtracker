@@ -11,6 +11,7 @@ import (
 	"github.com/cubeee/steamtracker/web/bootstrap"
 	"github.com/cubeee/steamtracker/web/cache"
 	"github.com/cubeee/steamtracker/web/routes"
+	"github.com/kataras/iris"
 	"github.com/mattes/migrate"
 	"github.com/mattes/migrate/database/postgres"
 	_ "github.com/mattes/migrate/source/file"
@@ -18,6 +19,7 @@ import (
 
 const (
 	AppName       = "SteamTracker"
+	ModuleName    = "web"
 	MigrationsDir = "file://./resources/migrations"
 )
 
@@ -33,7 +35,7 @@ func main() {
 
 	log.Println("SteamTracker Web starting...")
 	log.Println("Environment:", *env)
-	config.ReadConfig("web", env)
+	config.ReadConfig(ModuleName, *env)
 
 	connectDetails := &db.ConnectDetails{
 		Host:       config.GetString("database.host"),
@@ -61,7 +63,8 @@ func main() {
 	bootElapsed := time.Since(bootStart)
 	log.Println("SteamTracker Web started in", bootElapsed)
 
-	app.Listen(config.GetString("server.addr"))
+	irisConfig := iris.WithConfiguration(iris.YAML(config.GetConfigFilePath(ModuleName, *env)))
+	app.Listen(config.GetString("server.addr"), irisConfig)
 }
 
 func migrateDatabase(connectDetails *db.ConnectDetails) {

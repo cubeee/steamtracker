@@ -4,11 +4,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func ReadConfig(module string, env *string) error {
-	viper.SetConfigName("config." + *env)
-	viper.AddConfigPath("./resources/config/" + module + "/")
-	viper.SetConfigType("yaml")
+func ReadConfig(module string, env string) error {
+	viper.SetConfigFile(GetConfigFilePath(module, env))
 	return viper.ReadInConfig()
+}
+
+func GetConfigFilePath(module string, env string) string {
+	return "./resources/config/" + module + "/config." + env + ".yml"
 }
 
 func GetString(key string) string {
