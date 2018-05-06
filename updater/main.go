@@ -29,7 +29,7 @@ func main() {
 	flag.Parse()
 
 	log.Println("SteamTracker Updater starting...")
-	config.ReadConfig("updater", env)
+	config.ReadConfig("updater", *env)
 
 	connectDetails := &db.ConnectDetails{
 		Host:       os.Getenv("DB_HOST"),

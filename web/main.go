@@ -9,7 +9,8 @@ import (
 	"github.com/cubeee/steamtracker/shared/config"
 	"github.com/cubeee/steamtracker/shared/db"
 	"github.com/cubeee/steamtracker/web/bootstrap"
-	"github.com/cubeee/steamtracker/web/cache"
+	cacheLoader "github.com/cubeee/steamtracker/web/cache/loader"
+	statisticsCache "github.com/cubeee/steamtracker/web/cache/statistics"
 	"github.com/cubeee/steamtracker/web/routes"
 	"github.com/kataras/iris"
 	"github.com/mattes/migrate"
@@ -89,7 +90,14 @@ func migrateDatabase(connectDetails *db.ConnectDetails) {
 }
 
 func preloadCache() {
-	log.Println("Preloading cache...")
-	cache.GlobalCache = &cache.Cache{}
-	cache.GlobalCache.SetIndexCache(cache.LoadIndexCache(config.GetInt64("front-page.games-in-tables")))
+	log.Println("Preloading caches...")
+
+	loader := cacheLoader.Loader{}
+	loader.Add(func() {
+		statisticsCache.LoadCommonStatisticsCache()
+	})
+	loader.Add(func() {
+		statisticsCache.LoadGameStatisticsCache(config.GetInt64("front-page.games-in-tables"))
+	})
+	loader.LoadSync()
 }

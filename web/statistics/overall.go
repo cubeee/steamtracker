@@ -5,13 +5,12 @@ import (
 
 	database "github.com/cubeee/steamtracker/shared/db"
 	sharedModels "github.com/cubeee/steamtracker/shared/model"
+	modelCache "github.com/cubeee/steamtracker/web/cache/models"
 	"github.com/cubeee/steamtracker/web/model"
 )
 
-var gameCache = map[int]*sharedModels.Game{}
-
 type statistic struct {
-	GameId        int   `gorm:"column:game_id"`
+	GameId        int64 `gorm:"column:game_id"`
 	MinutesPlayed int64 `gorm:"column:minutes"`
 }
 
@@ -53,20 +52,9 @@ func getOverallGameStatistics(from, to time.Time, limit int64) *[]model.GameStat
 	db.Raw("SELECT * FROM all_games_minutes_tracked(?, ?) AS f(game_id BIGINT, minutes BIGINT) LIMIT ?",
 		from, to, limit).Scan(&statistics)
 	for _, statistic := range statistics {
-		game := getGameFromCache(statistic.GameId)
+		game := modelCache.GetCachedGameOrLoad(statistic.GameId)
 
 		gameStats = append(gameStats, model.GameStatistic{Game: game, MinutesPlayed: statistic.MinutesPlayed})
 	}
 	return &gameStats
-}
-
-func getGameFromCache(id int) sharedModels.Game {
-	cached, ok := gameCache[id]
-	var game sharedModels.Game
-	if !ok {
-		database.Db.Where("app_id = ?", id).First(&game)
-		gameCache[id] = &game
-		return game
-	}
-	return *cached
 }
